@@ -3,8 +3,8 @@ package backend.modelo;
 public class Ejercicio {
     private String codigo;
     private String nombre;
-    private String tipo; // "Cardiovascular" o "Fuerza"
-    private String nivelIntensidad; // "Básico", "Intermedio", "Avanzado", "Alto rendimiento"
+    private String tipo;
+    private String nivelIntensidad;
     private int tiempoMinutos;
     private String descripcion;
     private int ultimaSemanaUso;
@@ -20,7 +20,6 @@ public class Ejercicio {
         this.ultimaSemanaUso = ultimaSemanaUso;
     }
 
-    // Genera todos los Getters y Setters aquí...
     public String getTipo() { return tipo; }
     public String getCodigo() { return codigo; }
     public String getNivelIntensidad() { return nivelIntensidad; }
@@ -28,4 +27,7 @@ public class Ejercicio {
     public String getNombre() { return nombre; }
     public String getDescripcion() { return descripcion; }
     public int getUltimaSemanaUso() { return ultimaSemanaUso; }
+
+    // FIX 3: Setter para poder actualizar la semana de uso al generar una rutina
+    public void setUltimaSemanaUso(int semana) { this.ultimaSemanaUso = semana; }
 }

@@ -9,42 +9,63 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GestorRutinas {
-    // El sistema debe mantener los ejercicios en memoria usando un vector/lista [cite: 68]
     private List<Ejercicio> inventarioEjercicios;
     private List<Suscriptor> suscriptores;
+
+    // FIX 1: semanaActual ahora es un campo configurable, no hardcodeado
+    private int semanaActual;
 
     public GestorRutinas() {
         inventarioEjercicios = new ArrayList<>();
         suscriptores = new ArrayList<>();
+        this.semanaActual = 1;
     }
 
-    // Método para conectar la interfaz gráfica con la lógica (Patrón Observador) 
+    // FIX 1: Permite configurar la semana actual desde afuera
+    public void setSemanaActual(int semana) { this.semanaActual = semana; }
+    public int getSemanaActual() { return semanaActual; }
+
     public void suscribir(Suscriptor s) {
-        suscriptores.add(s);
+        if (!suscriptores.contains(s)) {
+            suscriptores.add(s);
+        }
+    }
+
+    // FIX 2: Método para desuscribirse (necesario cuando VentanaGeneracion se cierra)
+    public void desuscribir(Suscriptor s) {
+        suscriptores.remove(s);
     }
 
     // --- REQUERIMIENTO 1: CARGA DE ARCHIVO ---
     public void cargarEjerciciosDesdeArchivo(String rutaArchivo) {
         inventarioEjercicios.clear();
-        // Manejo de excepciones por archivo inexistente [cite: 69]
         try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
             String linea;
+            int numeroLinea = 0;
             while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(",");
-                
-                // Validación de información incompleta o formato incorrecto [cite: 69]
-                if (datos.length != 7) {
-                    throw new IllegalArgumentException("La línea no tiene los 7 datos requeridos."); 
+                numeroLinea++;
+                // FIX 4: Ignorar encabezado si el CSV lo tiene
+                if (linea.trim().toLowerCase().startsWith("codigo") ||
+                    linea.trim().toLowerCase().startsWith("código")) {
+                    continue;
                 }
-                
+                if (linea.trim().isEmpty()) continue;
+
+                String[] datos = linea.split(",");
+
+                if (datos.length != 7) {
+                    throw new IllegalArgumentException(
+                        "La línea " + numeroLinea + " no tiene los 7 datos requeridos.");
+                }
+
                 Ejercicio ej = new Ejercicio(
-                    datos[0].trim(),                 // Código
-                    datos[1].trim(),                 // Nombre
-                    datos[2].trim(),                 // Tipo
-                    datos[3].trim(),                 // Intensidad
-                    Integer.parseInt(datos[4].trim()), // Tiempo
-                    datos[5].trim(),                 // Descripción
-                    Integer.parseInt(datos[6].trim())  // Última semana de uso
+                    datos[0].trim(),
+                    datos[1].trim(),
+                    datos[2].trim(),
+                    datos[3].trim(),
+                    Integer.parseInt(datos[4].trim()),
+                    datos[5].trim(),
+                    Integer.parseInt(datos[6].trim())
                 );
                 inventarioEjercicios.add(ej);
             }
@@ -62,43 +83,45 @@ public class GestorRutinas {
         List<Ejercicio> rutinaGenerada = new ArrayList<>();
         int encontradosCardio = 0;
         int encontradosFuerza = 0;
-        
-        // Asumimos una semana actual fija (ej. semana 10) para calcular si son consecutivas
-        int semanaActual = 10; 
 
         for (Ejercicio ej : inventarioEjercicios) {
             boolean intensidadCoincide = ej.getNivelIntensidad().equalsIgnoreCase(intensidadRequerida);
-            
-            // Restricción: No repetición en semanas consecutivas [cite: 44]
+
+            // FIX 1: Usa semanaActual dinámico
             boolean noEsSemanaConsecutiva = Math.abs(semanaActual - ej.getUltimaSemanaUso()) > 1;
 
             if (intensidadCoincide && noEsSemanaConsecutiva) {
                 if (ej.getTipo().equalsIgnoreCase("Cardiovascular") && encontradosCardio < cantCardio) {
                     rutinaGenerada.add(ej);
                     encontradosCardio++;
-                } 
-                else if (ej.getTipo().equalsIgnoreCase("Fuerza") && encontradosFuerza < cantFuerza) {
+                } else if (ej.getTipo().equalsIgnoreCase("Fuerza") && encontradosFuerza < cantFuerza) {
                     rutinaGenerada.add(ej);
                     encontradosFuerza++;
                 }
             }
-            
-            if (encontradosCardio == cantCardio && encontradosFuerza == cantFuerza) {
-                break; // Ya encontramos todo lo solicitado
-            }
+
+            if (encontradosCardio == cantCardio && encontradosFuerza == cantFuerza) break;
         }
 
         if (encontradosCardio < cantCardio || encontradosFuerza < cantFuerza) {
-            notificarError("No hay suficientes ejercicios en el archivo que cumplan con estos requisitos.");
+            notificarError(
+                "No hay suficientes ejercicios que cumplan con estos requisitos.\n" +
+                "Cardio encontrado: " + encontradosCardio + "/" + cantCardio +
+                " | Fuerza encontrada: " + encontradosFuerza + "/" + cantFuerza
+            );
         } else {
-            // Notificamos al frontend que la rutina está lista y le enviamos la lista 
-            for (Suscriptor s : suscriptores) {
+            // FIX 3: Actualizar la semana de uso de cada ejercicio seleccionado
+            for (Ejercicio ej : rutinaGenerada) {
+                ej.setUltimaSemanaUso(semanaActual);
+            }
+            // Notificar con copia de la lista para evitar modificaciones externas
+            List<Suscriptor> copia = new ArrayList<>(suscriptores);
+            for (Suscriptor s : copia) {
                 s.onRutinaGenerada(rutinaGenerada);
             }
         }
     }
 
-    // --- MÉTODOS PRIVADOS DE NOTIFICACIÓN ---
     private void notificarCargaExitosa() {
         int total = inventarioEjercicios.size();
         int tiempoTotal = 0;
@@ -119,13 +142,15 @@ public class GestorRutinas {
         }
 
         for (Suscriptor s : suscriptores) {
-            s.onDatosCargados(total, tiempoTotal, cantCardio, cantFuerza, 
+            s.onDatosCargados(total, tiempoTotal, cantCardio, cantFuerza,
                               cantBasico, cantInter, cantAvanzado, cantAlto);
         }
     }
 
     private void notificarError(String msj) {
-        for (Suscriptor s : suscriptores) {
+        // Notificar con copia para evitar ConcurrentModificationException
+        List<Suscriptor> copia = new ArrayList<>(suscriptores);
+        for (Suscriptor s : copia) {
             s.onError(msj);
         }
     }
