@@ -1,0 +1,36 @@
+E001, Caminata en cinta, Cardiovascular, Básico, 20, Caminata a ritmo constante sin inclinación, 5
+E002, Bicicleta estática suave, Cardiovascular, Básico, 15, Pedaleo ligero para calentamiento, 3
+E003, Elíptica nivel bajo, Cardiovascular, Básico, 20, Movimiento continuo sin resistencia, 6
+E004, Nado estilo libre lento, Cardiovascular, Básico, 30, Natación a ritmo relajado, 2
+E005, Baile aeróbico suave, Cardiovascular, Básico, 25, Coreografía de bajo impacto, 7
+E006, Trote moderado, Cardiovascular, Intermedio, 25, Trote a 8 km/h en cinta, 4
+E007, Saltar la cuerda, Cardiovascular, Intermedio, 15, Saltos a ritmo constante, 6
+E008, Escaladora, Cardiovascular, Intermedio, 20, Máquina escaladora a intensidad media, 1
+E009, Remo ergómetro, Cardiovascular, Intermedio, 15, Remo continuo a 22 golpes por minuto, 5
+E010, Caminata con inclinación, Cardiovascular, Intermedio, 30, Caminata rápida con 10% de inclinación, 2
+E011, Correr a intervalos, Cardiovascular, Avanzado, 25, Sprints de 1 minuto intercalados con trote, 6
+E012, HIIT en bicicleta, Cardiovascular, Avanzado, 20, Intervalos de alta intensidad con resistencia, 3
+E013, Burpees continuos, Cardiovascular, Avanzado, 10, Realizar burpees sin descanso, 7
+E014, Sprints en subida, Cardiovascular, Avanzado, 15, Carreras cortas en pendiente inclinada, 4
+E015, Natación rápida, Cardiovascular, Avanzado, 30, Nado continuo a alta velocidad, 5
+E016, Maratón de sprints, Cardiovascular, Alto rendimiento, 40, Sprints repetitivos al máximo esfuerzo, 2
+E017, Ciclismo de montaña intenso, Cardiovascular, Alto rendimiento, 45, Ruta con gran exigencia cardiovascular, 6
+E018, Salto doble de cuerda, Cardiovascular, Alto rendimiento, 15, Saltos dobles continuos sin parar, 3
+E019, Circuito espartano, Cardiovascular, Alto rendimiento, 30, Mezcla de obstáculos y cardio extremo, 7
+E020, Flexiones con rodillas, Fuerza, Básico, 10, Flexiones de brazos apoyando las rodillas, 4
+E021, Sentadillas sin peso, Fuerza, Básico, 15, Flexión de rodillas manteniendo la espalda recta, 2
+E022, Plancha frontal, Fuerza, Básico, 5, Mantener posición isométrica en antebrazos, 6
+E023, Elevación de pantorrillas, Fuerza, Básico, 10, Elevación de talones usando el peso corporal, 5
+E024, Curl de bíceps con banda, Fuerza, Básico, 12, Trabajo de bíceps con banda de resistencia elástica, 7
+E025, Press de banca con mancuernas, Fuerza, Intermedio, 15, Empuje horizontal acostado en banco, 3
+E026, Peso muerto rumano, Fuerza, Intermedio, 20, Bisagra de cadera con mancuernas o barra ligera, 6
+E027, Dominadas asistidas, Fuerza, Intermedio, 15, Tracción vertical con ayuda de banda, 4
+E028, Zancadas con peso, Fuerza, Intermedio, 20, Zancadas alternas sosteniendo mancuernas, 2
+E029, Press militar sentado, Fuerza, Intermedio, 15, Empuje vertical de hombros con mancuernas, 7
+E030, Sentadilla con barra, Fuerza, Avanzado, 25, Sentadilla profunda con carga en la espalda, 5
+E031, Dominadas estrictas, Fuerza, Avanzado, 15, Tracción vertical con el peso corporal, 3
+E032, Press de banca pesado, Fuerza, Avanzado, 20, Levantamiento de barra en banca plana con discos, 6
+E033, Remo con barra, Fuerza, Avanzado, 20, Tracción horizontal inclinando el torso, 1
+E034, Hip thrust pesado, Fuerza, Avanzado, 20, Extensión de cadera con barra y discos, 4
+E035, Levantamiento olímpico (Snatch), Fuerza, Alto rendimiento, 30, Arrancada completa desde el suelo, 2
+E036, Clean and Jerk, Fuerza, Alto rendimiento, 30, Dos tiempos olímpicos con carga máxima, 7
